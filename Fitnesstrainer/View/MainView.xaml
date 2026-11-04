@@ -1,0 +1,55 @@
+<Window x:Class="Fitnesstrainer.View.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:Fitnesstrainer.ViewModel"
+        Title="Fitnesstrainer – MVVM Aufgaben 1 bis 7"
+        Height="550" Width="760" MinWidth="560" MinHeight="480">
+    <!-- Das ViewModel ist der DataContext aller untergeordneten Elemente. -->
+    <Window.DataContext>
+        <vm:MainViewModel />
+    </Window.DataContext>
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="Fitnesstrainer" FontSize="25" FontWeight="Bold" Margin="0,0,0,20"/>
+        <!-- TwoWay: Änderungen in der TextBox werden an das ViewModel übertragen. -->
+        <StackPanel Grid.Row="1" Margin="0,0,0,12">
+            <TextBlock Text="Name der Trainingseinheit" Margin="0,0,0,4"/>
+            <TextBox Text="{Binding NameTrainingseinheit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Padding="7"/>
+        </StackPanel>
+        <!-- Der eingegebene Text wird in die Integer-Property Dauer umgewandelt. -->
+        <StackPanel Grid.Row="2" Margin="0,0,0,14">
+            <TextBlock Text="Dauer in Minuten" Margin="0,0,0,4"/>
+            <TextBox Text="{Binding DauerTrainingseinheit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" Padding="7"/>
+        </StackPanel>
+        <!-- Jeder Button startet einen ICommand, nicht einen Click-Handler. -->
+        <WrapPanel Grid.Row="3" Margin="0,0,0,12">
+            <Button Content="Speichern" Command="{Binding SpeichernCommand}" Padding="16,8" Margin="0,0,8,0"/>
+            <Button Content="Clear" Command="{Binding LoeschenCommand}" Padding="16,8" Margin="0,0,8,0"/>
+            <Button Content="Info ausgeben" Command="{Binding InfoCommand}" Padding="16,8"/>
+        </WrapPanel>
+        <TextBlock Grid.Row="4" Text="{Binding SpeicherStatus}" TextWrapping="Wrap" Margin="0,0,0,18" Foreground="DarkGreen"/>
+        <!-- ObservableCollection liefert der ComboBox die Trainingsobjekte. -->
+        <StackPanel Grid.Row="5" Margin="0,0,0,16">
+            <TextBlock Text="Gespeicherte Trainingseinheiten (simulierte Datenbank)" Margin="0,0,0,6"/>
+            <DockPanel>
+                <Button DockPanel.Dock="Right" Content="Liste laden" Command="{Binding LadenCommand}" Padding="12,7" Margin="10,0,0,0"/>
+                <ComboBox ItemsSource="{Binding TrainingsEinheitenListe}"
+                          SelectedItem="{Binding AusgewaehlteTrainingseinheit, Mode=TwoWay}"
+                          DisplayMemberPath="Name" MinHeight="32"/>
+            </DockPanel>
+        </StackPanel>
+        <TextBlock Grid.Row="6" Text="Informationen" FontWeight="Bold" Margin="0,0,0,6"/>
+        <Border Grid.Row="7" Background="#F2F5F9" CornerRadius="6" Padding="14">
+            <TextBlock Text="{Binding InfoText}" TextWrapping="Wrap" Foreground="#243247"/>
+        </Border>
+    </Grid>
+</Window>
